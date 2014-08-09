@@ -1,3 +1,5 @@
+from random import randint
+
 #We want to start at the second item in our array
 #and then compare it to the first
 def insertionSort(a):
@@ -16,5 +18,10 @@ def insertionSort(a):
     a[i + 1] = key
   return input
 
-input = [3, 5, 6, 2, 8, 9]
+arrayLength = raw_input('Set an array length please: ')
+input = []
+for x in range(0, int(arrayLength)):
+  inputItem = randint(0, 100000000)
+  print inputItem
+  input.insert(x, inputItem)
 print insertionSort(input)
