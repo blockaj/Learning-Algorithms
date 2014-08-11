@@ -14,7 +14,7 @@ int main(int argc, char *argv[]) {
 	}
 	int* orderedList = insertionSort(inputArray, arrayLength);
 	for(int i = 0; i < arrayLength; i++) {
-		cout << orderedList[i] << endl;
+		cout << orderedList[i];
 	}
 	return 0;
 }
