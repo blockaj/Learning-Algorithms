@@ -1,3 +1,7 @@
+//The purpose of this small script is to understand the way
+//basic algorithms (like insertion sort) slow down over time. 
+//Insertion sort grows in quadratic time and can be expressed by cn^2
+
 #include <iostream>
 
 using namespace std;
@@ -14,20 +18,31 @@ int main(int argc, char *argv[]) {
 	}
 	int* orderedList = insertionSort(inputArray, arrayLength);
 	for(int i = 0; i < arrayLength; i++) {
-		cout << orderedList[i];
+		if (i != arrayLength - 1) {
+			cout << orderedList[i] << ", ";
+		}
+		else {
+			cout << orderedList[i] << endl;
+		}
+		
 	}
 	return 0;
 }
 
+//We want to start at the second item in our array
+//and then compare it to the first
 int* insertionSort(int* a, int inputLength) {
 	for(int j = 1; j < inputLength; j++) {
 		int key = a[j];
-		int i = j - 1;
+		int i = j - 1;  //Get the previous item
+
+		//While the previous item is greater than the current one
+        //flip the items positions in the array
 		while(i > -1 && a[i] > key) {
 			a[i + 1] = a[i];
 			i = i - 1;
 		}
-		a[i + 1] = key;
+		a[i + 1] = key;  //If they're in the right order, move along
 	}
 	return a;
 }
