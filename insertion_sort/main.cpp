@@ -12,11 +12,16 @@ int main(int argc, char *argv[]) {
 	int arrayLength;
 	cin >> arrayLength;
 	int inputArray[arrayLength];
+
+	//Fill input array with as many random numbers as array length
 	for (int i = 0; i < arrayLength; i++) {
 		int input = rand() % arrayLength + 1;
 		inputArray[i] = input;
 	}
 	int* orderedList = insertionSort(inputArray, arrayLength);
+
+	//Loop through the new ordered list so we can print out each
+	//of the items individually
 	for(int i = 0; i < arrayLength; i++) {
 		if (i != arrayLength - 1) {
 			cout << orderedList[i] << ", ";
