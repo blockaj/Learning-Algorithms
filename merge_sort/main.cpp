@@ -1,81 +1,91 @@
 #include <iostream>
+#include <string>
+#include <math.h>
+#include <vector>
 
 using namespace std;
 
-int* merge(int* a, int p, int q, int r);
-int* mergeSort(int* a, int p, int r);
-template <class type> type printArray(type* array);
-
+void indent(int spaces);
+template <class type> void printVector(vector<type> a);
+vector<int> mergeSort(vector<int> a, int dpth);
+vector<int> merge(vector<int> left, vector<int> right);
 int main(int argc, char *argv[]) {
-	cout << "Type in array length: ";
-	int arrayLength;
-	cin >> arrayLength;
-	int inputArray[arrayLength];
-
-	//Fill input array with as many random numbers as array length
-	for (int i = 0; i < arrayLength; i++) {
-		int input = rand() % arrayLength + 1;
-		inputArray[i] = input;
-	}
-	int* orderedList = mergeSort(inputArray, 1, arrayLength);
-
-	//Loop through the new ordered list so we can print out each
-	//of the items individually
-	for(int i = 0; i < arrayLength; i++) {
-		if (i != arrayLength - 1) {
-			cout << orderedList[i] << ", ";
-		}
-		else {
-			cout << orderedList[i] << endl;
-		}
-		
-	}
+	int myInt[] = {2, 1, 45, 3, 8765, 21, 89, 32};
+	cout << "{2, 1, 45, 3, 8765, 21, 89, 32}" << endl;
+	vector<int> input(myInt, myInt + sizeof(myInt) / sizeof(int));
+	mergeSort(input, 0);
 	return 0;
 }
 
-int* merge(int* a, int p, int q, int r) {
-	int m = q - p + 1;  //Length of subarray a[p..q]
-	int n = r - q;  //Length of subarray a[q + 1..r]
-	int L[m + 1];  //"Left" array = a[p..q]
-	int R[n + 1];  //"Right" array = a[q + 1..r]
+vector<int> mergeSort(vector<int> a, int dpth) {
+	if (a.size() > 2) {
+		int middle = floor(a.size() / 2);
+		vector<int> left; 
+		vector<int> right;
+		vector<int> result;
 
-	//Copy a[p..q] to L
-	for (int i = 1; i < m; i++) {
-		L[i] = a[p + i - 1];
-	}
-
-	//Copy a[q + 1..r] to R
-	for (int j = 1; j < n; j++) {
-		R[j] = a[q + j];
-	}
-	L[m + 1] = NULL;
-	L[n + 1] = NULL;
-
-	int i = 1;
-	int j = 1;
-
-	for (int k = p; p < r; p++) {
-		if (L[i] <= R[j]) {
-			a[k] = L[i];
-			i = i + 1;
+		for (int i = 0; i < middle; i++) {
+			left.push_back(a[i]);
 		}
-		else if (a[k] == R[j]) {
-			j = j + 1;
+		for (int j = middle; j < a.size(); j++) {
+			right.push_back(a[j]);
+		}
+		//Debuggery, not actual part of algorithm
+		/*
+		indent(dpth); 
+		cout << "Sizes (left, right): " << left.size() << ", " << right.size() << endl;
+		indent(dpth); 
+		cout << "Left: ";
+		printVector<int>(left);
+		indent(dpth);
+		cout << "Right: ";
+		printVector<int>(right);
+		*/
+		//Part of algorithm
+		mergeSort(left, dpth + 1);
+		mergeSort(right, dpth + 1);
+		merge(left, right);
+	}
+	return a; 
+}
+vector<int> merge(vector<int> left, vector<int> right) {
+	vector<int> result;
+	if (left.size() <= 3){
+		for (int i = 1; i < left.size(); ++i) {
+			int key = left[i];
+			int j = i - 1;
+			while (j > -1 && left[j] > key) {
+				left[j + 1] = left[j];
+				j = j - 1;
+			}
+			left[j+1] = key;
 		}
 	}
-	return a;
-}
-
-int* mergeSort(int* a, int p, int r) {
-	if (p < r) {
-		int q = (p + r) / 2;
-		cout << q << endl;
-		mergeSort(a, p, q);
-		mergeSort(a, q + 1, r);
-		merge(a, p, q, r);
+	else {
+		for (int i = 0; i < left.size(); ++i) {
+			
+		}
 	}
-	return a;
+	
+	//cout << "Result: "; printVector<int>(result);
+	return result;
 }
 
-template <class type> type printArray(type* array) {
+void indent(int spaces) {
+	for (int i = 0; i < spaces; i++) {
+		cout << "    "; 
+	}
 }
+
+template <class type> void printVector(vector<type> a) {
+	for (vector<int>::const_iterator i = a.begin(); i != a.end(); ++i) {
+		if (i == a.end() - 1) {
+			cout << *i << endl;
+		}
+		else {
+			cout << *i << ", ";
+		}
+	}
+}
+
+
