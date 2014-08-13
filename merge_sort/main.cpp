@@ -31,7 +31,6 @@ vector<int> mergeSort(vector<int> a, int dpth) {
 			right.push_back(a[j]);
 		}
 		//Debuggery, not actual part of algorithm
-		/*
 		indent(dpth); 
 		cout << "Sizes (left, right): " << left.size() << ", " << right.size() << endl;
 		indent(dpth); 
@@ -40,7 +39,7 @@ vector<int> mergeSort(vector<int> a, int dpth) {
 		indent(dpth);
 		cout << "Right: ";
 		printVector<int>(right);
-		*/
+
 		//Part of algorithm
 		mergeSort(left, dpth + 1);
 		mergeSort(right, dpth + 1);
@@ -50,24 +49,29 @@ vector<int> mergeSort(vector<int> a, int dpth) {
 }
 vector<int> merge(vector<int> left, vector<int> right) {
 	vector<int> result;
-	if (left.size() <= 3){
-		for (int i = 1; i < left.size(); ++i) {
-			int key = left[i];
-			int j = i - 1;
-			while (j > -1 && left[j] > key) {
-				left[j + 1] = left[j];
-				j = j - 1;
+	while (left.size() > 0 || right.size() > 0) {
+		if (left.size() > 0 && right.size() > 0) {
+			//[[2, 1],]
+			if (left[0] <= right[0] ) {
+				result.push_back(left[0]);
+				left.erase(left.begin());
 			}
-			left[j+1] = key;
+			else {
+				result.push_back(right[0]);
+				right.erase(right.begin());
+			}
+
+		}
+		else if (left.size() > 0) {
+			result.push_back(left[0]);
+			left.erase(left.begin());
+		} 
+		else if (right.size() > 0) {
+			result.push_back(right[0]);
+			right.erase(right.begin());
 		}
 	}
-	else {
-		for (int i = 0; i < left.size(); ++i) {
-			
-		}
-	}
-	
-	//cout << "Result: "; printVector<int>(result);
+	cout << "Result: "; printVector<int>(result);
 	return result;
 }
 
