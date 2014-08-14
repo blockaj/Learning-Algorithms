@@ -1,11 +1,11 @@
 #include <iostream>
 #include <string>
 #include <math.h>
+#include <time.h>
 #include <vector>
 
 using namespace std;
 
-void indent(int spaces);
 template <class type> void printVector(vector<type> a);
 vector<int> mergeSort(vector<int> a, int dpth);
 vector<int> merge(vector<int> left, vector<int> right);
@@ -15,13 +15,14 @@ int main(int argc, char *argv[]) {
 	int arrayLength; 
 	cin >> arrayLength;
 	int inputArray[arrayLength];
+	srand(324934 + time(NULL));
 	for (int i = 0; i < arrayLength; i++) {
 		int input = rand() % arrayLength + 1;
 		inputArray[i] = input; 
 	}
 	vector<int> input(inputArray, inputArray + sizeof(inputArray) / sizeof(int));
-	cout << "{" << endl; printVector<int>(input); cout << "}" << endl;
-	mergeSort(input, 0);
+	cout << "Unsorted: "; printVector<int>(input);
+	cout << "Sorted: "; printVector<int>(mergeSort(input, 0));
 	return 0;
 }
 
@@ -39,20 +40,20 @@ vector<int> mergeSort(vector<int> a, int dpth) {
 			right.push_back(a[j]);
 		}
 		//Debuggery, not actual part of algorithm
-		indent(dpth); 
+		/*
+
 		cout << "Sizes (left, right): " << left.size() << ", " << right.size() << endl;
-		indent(dpth); 
 		cout << "Left: ";
 		printVector<int>(left);
-		indent(dpth);
 		cout << "Right: ";
 		printVector<int>(right);
-
+		*/
 		//Part of algorithm
-		mergeSort(left, dpth + 1);
-		mergeSort(right, dpth + 1);
-		indent(dpth);
-		merge(left, right);
+		
+		
+		left = mergeSort(left, dpth + 1);
+		right = mergeSort(right, dpth + 1);
+		a = merge(left, right); 
 	}
 	return a; 
 }
@@ -82,15 +83,10 @@ vector<int> merge(vector<int> left, vector<int> right) {
 			right.erase(right.begin());
 		}
  	}
-	cout << "Result: "; printVector<int>(result);
 	return result;
 }
 
-void indent(int spaces) {
-	for (int i = 0; i < spaces; i++) {
-		cout << "    "; 
-	}
-}
+
 
 template <class type> void printVector(vector<type> a) {
 	for (vector<int>::const_iterator i = a.begin(); i != a.end(); ++i) {
