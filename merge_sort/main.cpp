@@ -16,10 +16,15 @@ int main(int argc, char *argv[]) {
 	cin >> arrayLength;
 	int inputArray[arrayLength];
 	srand(324934 + time(NULL));
+
+	//Create a unique, pseudo-randomly generated (prg) array with 
+	//a length equal to the one the user specified
 	for (int i = 0; i < arrayLength; i++) {
 		int input = rand() % arrayLength + 1;
 		inputArray[i] = input; 
 	}
+
+	//Take prg array and place it inside a nice little vector 
 	vector<int> input(inputArray, inputArray + sizeof(inputArray) / sizeof(int));
 	cout << "Unsorted: "; printVector<int>(input);
 	cout << "Sorted: "; printVector<int>(mergeSort(input, 0));
@@ -28,29 +33,19 @@ int main(int argc, char *argv[]) {
 
 vector<int> mergeSort(vector<int> a, int dpth) {
 	if (a.size() > 2) {
-		int middle = floor(a.size() / 2);
+		int middle = floor(a.size() / 2);  //Round down 
 		vector<int> left; 
 		vector<int> right;
 		vector<int> result;
 
+		//Copy first half and second half of input array
+		//into left and right arrays respectively
 		for (int i = 0; i < middle; i++) {
 			left.push_back(a[i]);
 		}
 		for (int j = middle; j < a.size(); j++) {
 			right.push_back(a[j]);
-		}
-		//Debuggery, not actual part of algorithm
-		/*
-
-		cout << "Sizes (left, right): " << left.size() << ", " << right.size() << endl;
-		cout << "Left: ";
-		printVector<int>(left);
-		cout << "Right: ";
-		printVector<int>(right);
-		*/
-		//Part of algorithm
-		
-		
+		}	
 		left = mergeSort(left, dpth + 1);
 		right = mergeSort(right, dpth + 1);
 		a = merge(left, right); 
@@ -60,6 +55,8 @@ vector<int> mergeSort(vector<int> a, int dpth) {
 vector<int> merge(vector<int> left, vector<int> right) {
 	vector<int> result;
 	while (left.size() > 0 || right.size() > 0) {
+
+		//Sort the small arrays using insertion sort
 		if (left.size() <= 3 && right.size() <= 3) {
 			left = sort(left);
 			right = sort(right);
